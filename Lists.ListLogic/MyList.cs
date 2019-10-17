@@ -311,17 +311,15 @@ namespace Lists.ListLogic
 
         #endregion
 
-        public IEnumerator GetEnumerator()
+        public IEnumerator<T> GetEnumerator()
         {
             return new MyListEnumerator<T>(_head);
         }
 
-        IEnumerator<T> IEnumerable<T>.GetEnumerator()
+        IEnumerator IEnumerable.GetEnumerator()
         {
-            throw new NotImplementedException();
+            return GetEnumerator();
         }
-
-
 
         public void Sort()
         {

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Text;
 using Lists.ListLogic;
+using Lists.Comparer;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Lists.Entity;
 using System;
@@ -88,7 +89,7 @@ namespace Lists.Test
             //Act
             object[] expected = { 4, 7, person, 1, 9 };
 
-            list.Sort(new AscComp());
+            list.Sort(new ComparerAsc());
 
             object[] sortedList = new object[list.Count];
             list.CopyTo(sortedList, 0);
@@ -109,40 +110,12 @@ namespace Lists.Test
             //Act
             object[] expected = { 9, 7, 5, 4, 1 };
 
-            list.Sort(new DescComp());
+            list.Sort(new ComparerDesc());
 
             int[] sortedList = new int[list.Count];
             list.CopyTo(sortedList, 0);
             //Assert
             CollectionAssert.AreEqual(expected, sortedList);
-        }
-
-        private class AscComp : IComparer
-        {
-            public int Compare(object x, object y)
-            {
-                IComparable leftObject = x as IComparable;
-                IComparable rightObject = y as IComparable;
-
-                if (leftObject == null || rightObject == null)
-                    throw new ArgumentException("Argument not from type ICompareable");
-
-                return leftObject.CompareTo(rightObject);
-            }
-        }
-
-        private class DescComp : IComparer
-        {
-            public int Compare(object x, object y)
-            {
-                IComparable leftObject = x as IComparable;
-                IComparable rightObject = y as IComparable;
-
-                if (leftObject == null || rightObject == null)
-                    throw new ArgumentException("Argument not from type ICompareable");
-
-                return rightObject.CompareTo(leftObject);
-            }
         }
     }
 }

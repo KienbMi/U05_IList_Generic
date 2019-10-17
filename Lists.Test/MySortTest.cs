@@ -33,28 +33,6 @@ namespace Lists.Test
         }
 
         [TestMethod()]
-        public void Sort_withIntAndPerson_PersonOnTheSamePos()
-        {
-            //Arrange
-            MyList<object> list = new MyList<object>();
-            Person person = new Person { LastName = "Muster", FirstName = "Max" };
-            list.Add(4);
-            list.Add(7);
-            list.Add(person);
-            list.Add(9);
-            list.Add(1);
-            //Act
-            object[] expected = { 4, 7, person, 1, 9 };
-
-            list.Sort();
-
-            object[] sortedList = new object[list.Count];
-            list.CopyTo(sortedList, 0);
-            //Assert
-            CollectionAssert.AreEqual(expected, sortedList);
-        }
-
-        [TestMethod()]
         public void SortComparer_withInt_ShouldBeSortedAsc()
         {
             //Arrange
@@ -70,28 +48,6 @@ namespace Lists.Test
             list.Sort(new ComparerAsc());
 
             int[] sortedList = new int[list.Count];
-            list.CopyTo(sortedList, 0);
-            //Assert
-            CollectionAssert.AreEqual(expected, sortedList);
-        }
-
-        [TestMethod()]
-        public void SortComparer_withIntandPerson_PersonOnTheSamePos()
-        {
-            //Arrange
-            MyList<object> list = new MyList<object>();
-            Person person = new Person { LastName = "Muster", FirstName = "Max" };
-            list.Add(4);
-            list.Add(7);
-            list.Add(person);
-            list.Add(9);
-            list.Add(1);
-            //Act
-            object[] expected = { 4, 7, person, 1, 9 };
-
-            list.Sort(new ComparerAsc());
-
-            object[] sortedList = new object[list.Count];
             list.CopyTo(sortedList, 0);
             //Assert
             CollectionAssert.AreEqual(expected, sortedList);
@@ -117,5 +73,77 @@ namespace Lists.Test
             //Assert
             CollectionAssert.AreEqual(expected, sortedList);
         }
+
+        [TestMethod()]
+        public void Sort_withPerson_ShouldBeSortedByFullname()
+        {
+            //Arrange
+            MyList<Person> list = new MyList<Person>();
+            Person person1 = new Person { LastName = "Muster", FirstName = "Max", Birthdate = Convert.ToDateTime("10.10.1988") };
+            Person person2 = new Person { LastName = "Maier", FirstName = "Fritz", Birthdate = Convert.ToDateTime("3.4.1992") };
+            Person person3 = new Person { LastName = "Huber", FirstName = "Sepp", Birthdate = Convert.ToDateTime("15.12.1982") };
+
+            list.Add(person1);
+            list.Add(person2);
+            list.Add(person3);
+            //Act
+            Person[] expected = { person3, person2, person1 };
+
+            list.Sort();
+
+            Person[] sortedList = new Person[list.Count];
+            list.CopyTo(sortedList, 0);
+            //Assert
+            CollectionAssert.AreEqual(expected, sortedList);
+        }
+
+        [TestMethod()]
+        public void SortComperer_withPerson_ShouldBeSortedByFirstnameAsc()
+        {
+            //Arrange
+            MyList<Person> list = new MyList<Person>();
+            Person person1 = new Person { LastName = "Muster", FirstName = "Max", Birthdate = Convert.ToDateTime("10.10.1988") };
+            Person person2 = new Person { LastName = "Maier", FirstName = "Fritz", Birthdate = Convert.ToDateTime("3.4.1992") };
+            Person person3 = new Person { LastName = "Huber", FirstName = "Sepp", Birthdate = Convert.ToDateTime("15.12.1982") };
+
+            list.Add(person1);
+            list.Add(person2);
+            list.Add(person3);
+            //Act
+            Person[] expected = { person2, person1, person3 };
+
+            list.Sort(new ComparerFirstname());
+
+            Person[] sortedList = new Person[list.Count];
+            list.CopyTo(sortedList, 0);
+            //Assert
+            CollectionAssert.AreEqual(expected, sortedList);
+        }
+
+
+        [TestMethod()]
+        public void SortComperer_withPerson_ShouldBeSortedByAgeDesc()
+        {
+            //Arrange
+            MyList<Person> list = new MyList<Person>();
+            Person person1 = new Person { LastName = "Muster", FirstName = "Max", Birthdate = Convert.ToDateTime("10.10.1988") };
+            Person person2 = new Person { LastName = "Maier", FirstName = "Fritz", Birthdate = Convert.ToDateTime("3.4.1992") };
+            Person person3 = new Person { LastName = "Huber", FirstName = "Sepp", Birthdate = Convert.ToDateTime("15.12.1982") };
+
+            list.Add(person1);
+            list.Add(person2);
+            list.Add(person3);
+            //Act
+            Person[] expected = { person3, person1, person2 };
+
+            list.Sort(new ComparerAge());
+
+            Person[] sortedList = new Person[list.Count];
+            list.CopyTo(sortedList, 0);
+            //Assert
+            CollectionAssert.AreEqual(expected, sortedList);
+        }
+
+
     }
 }

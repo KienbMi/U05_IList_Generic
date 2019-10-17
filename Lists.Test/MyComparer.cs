@@ -43,7 +43,7 @@ namespace Lists.Comparer
             if (leftObject == null || rightObject == null)
                 throw new ArgumentException("Argument not from type Person");
 
-            return rightObject.FirstName.CompareTo(leftObject.FirstName);
+            return leftObject.FirstName.CompareTo(rightObject.FirstName);
         }
     }
 
@@ -57,7 +57,7 @@ namespace Lists.Comparer
             if (leftObject == null || rightObject == null)
                 throw new ArgumentException("Argument not from type Person");
 
-            return rightObject.Birthdate.CompareTo(leftObject.Birthdate);
+            return leftObject.Birthdate.CompareTo(rightObject.Birthdate);
         }
     }
 }

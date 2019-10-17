@@ -67,7 +67,7 @@ namespace Lists.Test
             //Act
             int[] expected = { 1, 4, 5, 7, 9 };
 
-            list.Sort(new AscComp());
+            list.Sort(new ComparerAsc());
 
             int[] sortedList = new int[list.Count];
             list.CopyTo(sortedList, 0);

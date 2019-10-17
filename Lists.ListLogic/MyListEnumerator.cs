@@ -1,19 +1,20 @@
 ﻿using System.Collections;
 using System;
+using System.Collections.Generic;
 
 namespace Lists.ListLogic
 {
-    internal class MyListEnumerator : IEnumerator
+    internal class MyListEnumerator<T> : IEnumerator<T>
     {
-        private Node _head;
-        private Node _run;
+        private Node<T> _head;
+        private Node<T> _run;
 
-        public MyListEnumerator(Node head)
+        public MyListEnumerator(Node<T> head)
         {
             _head = head;
         }
 
-        public object Current
+        public T Current
         {
             get
             {
@@ -26,8 +27,14 @@ namespace Lists.ListLogic
                     return _run.DataObject;
                 }
             }
-        }  
-           
+        }
+
+        object IEnumerator.Current => Current;
+
+        public void Dispose()
+        {
+            throw new NotImplementedException();
+        }
 
         public bool MoveNext()
         {

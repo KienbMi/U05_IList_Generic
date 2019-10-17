@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Lists.ListLogic
 {
@@ -7,9 +8,9 @@ namespace Lists.ListLogic
     /// Die Liste verwaltet beliebige Elemente und implementiert
     /// das IList-Interface und damit auch ICollection und IEnumerable
     /// </summary>
-    public class MyList : IList
+    public class MyList<T> : IList<T>
     {
-        Node _head;
+        Node<T> _head;
 
         #region IList Members
 
@@ -20,12 +21,12 @@ namespace Lists.ListLogic
         /// </summary>
         /// <param name="value">Einzufügender Datensatz</param>
         /// <returns>Index des Werts in der Liste</returns>
-        public int Add(object value)
+        public int Add(T value)
         {
             if (value == null)
                 throw new ArgumentNullException(nameof(value));
 
-            Node newNode = new Node(value);
+            Node<T> newNode = new Node<T>(value);
             int idx;
 
             if (_head == null)
@@ -36,7 +37,7 @@ namespace Lists.ListLogic
             else
             {
                 idx = 1;
-                Node run = _head;
+                Node<T> run = _head;
                 while (run.Next != null)
                 {
                     run = run.Next;
@@ -45,6 +46,10 @@ namespace Lists.ListLogic
                 run.Next = newNode;
             }
             return idx;
+        }
+        void ICollection<T>.Add(T value)
+        {
+            Add(value);
         }
 
         /// <summary>
@@ -61,7 +66,7 @@ namespace Lists.ListLogic
         /// </summary>
         /// <param name="value">gesuchter DataObject</param>
         /// <returns></returns>
-        public bool Contains(object value)
+        public bool Contains(T value)
         {
             int idx = IndexOf(value);
             return (idx >= 0);
@@ -72,14 +77,14 @@ namespace Lists.ListLogic
         /// </summary>
         /// <param name="value">gesuchter DataObject</param>
         /// <returns>Index oder -1, falls der DataObject nicht in der Liste ist</returns>
-        public int IndexOf(object value)
+        public int IndexOf(T value)
         {
             int idx = -1;
             int count = 0;
 
             if (value != null)
             {
-                Node run = _head;
+                Node<T> run = _head;
                 while (run != null && idx == -1)
                 {
                     if (value.Equals(run.DataObject))
@@ -100,14 +105,14 @@ namespace Lists.ListLogic
         /// </summary>
         /// <param name="index">Einfügeposition</param>
         /// <param name="value">Einzufügender DataObject</param>
-        public void Insert(int index, object value)
+        public void Insert(int index, T value)
         {
             if (value == null)
                 throw new ArgumentNullException(nameof(value));
 
             if (index >= 0 && index <= Count)
             {
-                Node newNode = new Node(value);
+                Node<T> newNode = new Node<T>(value);
 
                 if (index == 0)
                 {
@@ -116,8 +121,8 @@ namespace Lists.ListLogic
                 }
                 else
                 {
-                    Node run = _head;
-                    Node prev = _head;
+                    Node<T> run = _head;
+                    Node<T> prev = _head;
                     int count = 0;
 
                     while (count < index)
@@ -154,7 +159,7 @@ namespace Lists.ListLogic
         /// zumindest ein mal gibt.
         /// </summary>
         /// <param name="value">zu entfernender DataObject</param>
-        public void Remove(object value)
+        public void Remove(T value)
         {
             int idx = IndexOf(value);
 
@@ -162,6 +167,16 @@ namespace Lists.ListLogic
             {
                 RemoveAt(idx);
             }
+        }
+
+        bool ICollection<T>.Remove(T item)
+        {
+            bool contains = Contains(item);
+            if (contains)
+            {
+                Remove(item);
+            }
+            return contains;
         }
 
         /// <summary>
@@ -179,8 +194,8 @@ namespace Lists.ListLogic
                 }
                 else
                 {
-                    Node run = _head;
-                    Node prev = _head;
+                    Node<T> run = _head;
+                    Node<T> prev = _head;
                     int count = 0;
 
                     while (count < index)
@@ -200,7 +215,7 @@ namespace Lists.ListLogic
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        public object this[int index]
+        public T this[int index]
         {
             get
             {
@@ -208,7 +223,7 @@ namespace Lists.ListLogic
                     throw new IndexOutOfRangeException();
 
                 int count = 0;
-                Node run = _head;
+                Node<T> run = _head;
 
                 while (count < index)
                 {
@@ -227,7 +242,7 @@ namespace Lists.ListLogic
                     throw new IndexOutOfRangeException();
 
                 int count = 0;
-                Node run = _head;
+                Node<T> run = _head;
 
                 while (count < index)
                 {
@@ -250,7 +265,7 @@ namespace Lists.ListLogic
         /// </summary>
         /// <param name="array">Zielarray, existiert bereits</param>
         /// <param name="index">Startindex</param>
-        public void CopyTo(Array array, int index)
+        public void CopyTo(T[] array, int index)
         {
 
             if (array != null &&
@@ -281,7 +296,7 @@ namespace Lists.ListLogic
             {
                 int count = 0;
 
-                Node run = _head;
+                Node<T> run = _head;
                 while (run != null)
                 {
                     count++;
@@ -311,8 +326,15 @@ namespace Lists.ListLogic
 
         public IEnumerator GetEnumerator()
         {
-            return new MyListEnumerator(_head);
+            return new MyListEnumerator<T>(_head);
         }
+
+        IEnumerator<T> IEnumerable<T>.GetEnumerator()
+        {
+            throw new NotImplementedException();
+        }
+
+
 
         public void Sort()
         {
@@ -332,8 +354,8 @@ namespace Lists.ListLogic
                         firstObject.CompareTo(secondObject) > 0)
                     {
                         changed = true;
-                        this[i+1] = firstObject;
-                        this[i] = secondObject;
+                        this[i+1] = (T)firstObject;
+                        this[i] = (T)secondObject;
                     }
                 }
             } while (changed);
@@ -357,11 +379,15 @@ namespace Lists.ListLogic
                         comparer.Compare(firstObject, secondObject) > 0)
                     {
                         changed = true;
-                        this[i + 1] = firstObject;
-                        this[i] = secondObject;
+                        this[i + 1] = (T)firstObject;
+                        this[i] = (T)secondObject;
                     }
                 }
             } while (changed);
         }
+
+
+
+
     }
 }

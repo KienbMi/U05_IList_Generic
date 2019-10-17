@@ -4,15 +4,15 @@ using System.Text;
 
 namespace Lists.ListLogic
 {
-    public class Node
+    public class Node<T>
     {
-        public Node(object dataObject)
+        public Node(T dataObject)
         {
             DataObject = dataObject;
         }
 
-        public Node Next { get; set; }
+        public Node<T> Next { get; set; }
 
-        public Object DataObject { get; set; }
+        public T DataObject { get; set; }
     }
 }

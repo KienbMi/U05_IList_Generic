@@ -33,7 +33,7 @@ namespace Lists.ListLogic
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public bool MoveNext()

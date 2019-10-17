@@ -394,7 +394,7 @@ namespace Lists.Test
         public void RemoveAt_EmptyList_ShouldChangeNothing()
         {
             //Arrange
-            MyList list = new MyList();
+            MyList<int> list = new MyList<int>();
             //Act
             list.RemoveAt(0);
             //Assert
@@ -406,12 +406,12 @@ namespace Lists.Test
         public void CopyTo_FullList_ShouldReturnFilledArray()
         {
             //Arrange
-            MyList list = new MyList();
+            MyList<int> list = new MyList<int>();
             list.Add(3);
             list.Add(4);
             list.Add(5);
             int[] expected = { 3, 4, 5 };
-            object[] targetArray = new object[3];
+            int[] targetArray = new int[3];
             //Act
             list.CopyTo(targetArray, 0);
             //Assert
@@ -422,7 +422,7 @@ namespace Lists.Test
         public void CopyTo_PartList_ShouldReturnArrayWithNullAtEnd()
         {
             //Arrange
-            MyList list = new MyList();
+            MyList<object> list = new MyList<object>();
             list.Add(3);
             list.Add(4);
             list.Add(5);
@@ -438,12 +438,12 @@ namespace Lists.Test
         public void CopyTo_LastElement_ShouldReturnArrayWithOneElement()
         {
             //Arrange
-            MyList list = new MyList();
+            MyList<int> list = new MyList<int>();
             list.Add(3);
             list.Add(4);
             list.Add(5);
             int?[] expected = { 5 };
-            object[] targetArray = new object[1];
+            int[] targetArray = new int[1];
             //Act
             list.CopyTo(targetArray, 2);
             //Assert
@@ -453,12 +453,12 @@ namespace Lists.Test
         public void CopyTo_TargetTooSmall_ShouldLeftArrayEmpty()
         {
             //Arrange
-            MyList list = new MyList();
+            MyList<int> list = new MyList<int>();
             list.Add(3);
             list.Add(4);
             list.Add(5);
-            object[] expected = { null, null };
-            object[] targetArray = new object[2];
+            int[] expected = { default, default };
+            int[] targetArray = new int[2];
             //Act
             list.CopyTo(targetArray, 0);
             //Assert
@@ -471,7 +471,7 @@ namespace Lists.Test
         public void Indexer_InsertMiddle_ShouldIncreaseList()
         {
             //Arrange
-            MyList list = new MyList();
+            MyList<int> list = new MyList<int>();
             list.Add(3);
             list.Add(4);
             list.Add(5);
@@ -485,7 +485,7 @@ namespace Lists.Test
         public void Indexer_InsertFirst_ShouldReturnCorrectIndex()
         {
             //Arrange
-            MyList list = new MyList();
+            MyList<int> list = new MyList<int>();
             list.Add(3);
             list.Add(4);
             list.Add(5);
@@ -499,7 +499,7 @@ namespace Lists.Test
         public void Indexer_ReadMiddle_ShouldReturnCorrectValue()
         {
             //Arrange
-            MyList list = new MyList();
+            MyList<int> list = new MyList<int>();
             list.Add(3);
             list.Add(4);
             list.Add(5);
@@ -513,7 +513,7 @@ namespace Lists.Test
         public void Sort_withInt_ShouldBeSorted()
         {
             //Arrange
-            MyList list = new MyList();
+            MyList<int> list = new MyList<int>();
             list.Add(4);
             list.Add(7);
             list.Add(5);
@@ -524,7 +524,7 @@ namespace Lists.Test
 
             list.Sort();
 
-            object[] sortedList = new object[list.Count];
+            int[] sortedList = new int[list.Count];
             list.CopyTo(sortedList, 0);
             //Assert
             CollectionAssert.AreEqual(expected, sortedList);
@@ -534,7 +534,7 @@ namespace Lists.Test
         public void Sort_withIntAndPerson_PersonOnTheSamePos()
         {
             //Arrange
-            MyList list = new MyList();
+            MyList<object> list = new MyList<object>();
             Person person = new Person { LastName = "Muster", FirstName = "Max"};
             list.Add(4);
             list.Add(7);
@@ -556,18 +556,18 @@ namespace Lists.Test
         public void SortComparer_withInt_ShouldBeSortedAsc()
         {
             //Arrange
-            MyList list = new MyList();
+            MyList<int> list = new MyList<int>();
             list.Add(4);
             list.Add(7);
             list.Add(5);
             list.Add(9);
             list.Add(1);
             //Act
-            object[] expected = { 1, 4, 5, 7, 9 };
+            int[] expected = { 1, 4, 5, 7, 9 };
 
             list.Sort(new AscComp());
 
-            object[] sortedList = new object[list.Count];
+            int[] sortedList = new int[list.Count];
             list.CopyTo(sortedList, 0);
             //Assert
             CollectionAssert.AreEqual(expected, sortedList);
@@ -577,7 +577,7 @@ namespace Lists.Test
         public void SortComparer_withIntandPerson_PersonOnTheSamePos()
         {
             //Arrange
-            MyList list = new MyList();
+            MyList<object> list = new MyList<object>();
             Person person = new Person { LastName = "Muster", FirstName = "Max" };
             list.Add(4);
             list.Add(7);
@@ -610,7 +610,7 @@ namespace Lists.Test
 
             list.Sort(new DescComp());
 
-            object[] sortedList = new object[list.Count];
+            int[] sortedList = new int[list.Count];
             list.CopyTo(sortedList, 0);
             //Assert
             CollectionAssert.AreEqual(expected, sortedList);

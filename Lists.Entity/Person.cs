@@ -2,7 +2,7 @@
 
 namespace Lists.Entity
 {
-    public class Person
+    public class Person : IComparable
     {
         public string LastName { get; set; }
         public string FirstName { get; set; }
@@ -11,6 +11,16 @@ namespace Lists.Entity
         public override string ToString()
         {
             return $"{LastName} {FirstName}";
+        }
+
+        public int CompareTo(object other)
+        {
+            Person otherPerson = other as Person;
+
+            if (otherPerson == null)
+                throw new ArgumentException("Argument is not from type Person");
+
+            return ToString().CompareTo(other.ToString());
         }
     }
 }

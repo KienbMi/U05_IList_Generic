@@ -20,8 +20,7 @@ namespace Lists.ListLogic
         /// nicht behandelt und lösen eine Exception aus.
         /// </summary>
         /// <param name="value">Einzufügender Datensatz</param>
-        /// <returns>Index des Werts in der Liste</returns>
-        public int Add(T value)
+        public void Add(T value)
         {
             if (value == null)
                 throw new ArgumentNullException(nameof(value));
@@ -45,11 +44,6 @@ namespace Lists.ListLogic
                 }
                 run.Next = newNode;
             }
-            return idx;
-        }
-        void ICollection<T>.Add(T value)
-        {
-            Add(value);
         }
 
         /// <summary>
@@ -159,7 +153,8 @@ namespace Lists.ListLogic
         /// zumindest ein mal gibt.
         /// </summary>
         /// <param name="value">zu entfernender DataObject</param>
-        public void Remove(T value)
+        /// <returns>True wenn gefunden und gelöscht</returns>
+        public bool Remove(T value)
         {
             int idx = IndexOf(value);
 
@@ -167,16 +162,8 @@ namespace Lists.ListLogic
             {
                 RemoveAt(idx);
             }
-        }
 
-        bool ICollection<T>.Remove(T item)
-        {
-            bool contains = Contains(item);
-            if (contains)
-            {
-                Remove(item);
-            }
-            return contains;
+            return (idx >= 0); 
         }
 
         /// <summary>
@@ -354,12 +341,14 @@ namespace Lists.ListLogic
                         firstObject.CompareTo(secondObject) > 0)
                     {
                         changed = true;
-                        this[i+1] = (T)firstObject;
-                        this[i] = (T)secondObject;
+                        T tmp = this[i + 1];
+                        this[i+1] = this[i];
+                        this[i] = tmp;
                     }
                 }
             } while (changed);
         }
+
 
         public void Sort(IComparer comparer)
         {
@@ -379,8 +368,9 @@ namespace Lists.ListLogic
                         comparer.Compare(firstObject, secondObject) > 0)
                     {
                         changed = true;
-                        this[i + 1] = (T)firstObject;
-                        this[i] = (T)secondObject;
+                        T tmp = this[i + 1];
+                        this[i + 1] = this[i];
+                        this[i] = tmp;
                     }
                 }
             } while (changed);
